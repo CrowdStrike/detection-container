@@ -23,11 +23,10 @@ docker build -t <repository>/cs_centos .
 
 ## Use your container
 
-Start test container (sudo may be required, initial run requires some download time) adding interactive mode and remove container after exit.
+Start test container (sudo may be required, initial run requires some download time) adding interactive mode and remove container after exit. Reusing container is not adviced due to changes in the container OS.
 ```
 docker run --rm -it <repository>/cs_centos
 ```
-Select on ption from the menu to run and check detections in dashboard
-Exit container ( x ) will destroy and cleanup container
+Select an option from the menu to run and check detections in dashboard. Exit container ( x ) will destroy and cleanup container. 
 
-If you use the 'e' option you will enter the container shell where you will have the opportunity to run your own tests or scripts and/or install packages. Note that all changes will be deleted when you exit the container.
+If you use the 'e' option you will enter the container shell where you will have the opportunity to run your own tests or scripts and/or install packages. Note that all changes will be deleted when you exit the container (when using --rm option).
