@@ -1,16 +1,16 @@
 # Crowdstrike Docker Detection Container
 
-This container will create detections/preventions on a Linux protected by CrowdStrike sensor
+This container will create detections/preventions on a Linux system protected by a CrowdStrike sensor
 
 # Prerequisites
 
-To use this Detection Container you use a supported Linux image with docker and the Falcon sensor installed. Short description is below.
+To use this Detection Container a supported Linux image with Docker and the CrowdStrike Falcon sensor installed. Short description is below.
 
 Install Docker CE in your Linux host
 ```
 https://docs.docker.com/engine/install/
 ```
-Install sensor and check Reduced Functionality Mode (RFM) status to verify kernel is fully supported (should return False)
+Install CrowdStrike Falcon sensor and check Reduced Functionality Mode (RFM) status to verify kernel is fully supported (should return False)
 ```
 sudo /opt/CrowdStrike/falconctl -g --rfm-state
 ```
@@ -23,10 +23,10 @@ docker build -t <repository>/cs_centos .
 
 ## Use your container
 
-Start test container (sudo may be required, initial run requires some download time) adding interactive mode and remove container after exit. Reusing container is not adviced due to changes in the container OS.
+Start test container (sudo may be required, initial run requires some download time if retrieved from repository) adding interactive mode and remove container after exit. Reusing container is not recommended due to changes in the container OS.
 ```
 docker run --rm -it <repository>/cs_centos
 ```
-Select an option from the menu to run and check detections in dashboard. Exit container ( x ) will destroy and cleanup container. 
+Select an option from the menu to run and check for detections in the CrowdStrike Falcon dashboard. Exit container ( x ) will destroy and cleanup container. 
 
-If you use the 'e' option you will enter the container shell where you will have the opportunity to run your own tests or scripts and/or install packages. Note that all changes will be deleted when you exit the container (when using --rm option).
+Using the 'e' option will open the container shell to run your own tests and/or scripts. Note all changes will be deleted when you exit the container (when using --rm option).
