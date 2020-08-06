@@ -1,4 +1,4 @@
-# Crowdstrike Docker Detection Container
+# CrowdStrike Docker Detection Container
 
 This container will create detections/preventions on a Linux system protected by a CrowdStrike sensor
 
