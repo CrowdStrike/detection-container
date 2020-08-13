@@ -44,6 +44,8 @@ show_menu(){
     done
 
     printf "\n"
+    printf "${menu}**${number} a)${menu} Automatically run random scripts${normal}\n"
+    printf "\n"
     printf "${menu}**${number} e)${menu} Exit to Container shell${normal}\n"
     printf "${menu}**${number} x)${menu} Exit Container${normal}\n"
     printf "${menu}*********************************************${normal}\n"
@@ -77,6 +79,12 @@ while  true
 	    option_picked "$opt - ${mitems[$m]}"
 	    $edir${eitems[$m]};
             after_exec;
+        ;;
+
+        a) clear;
+            option_picked "This script will automatically generate random events at ransom interval (30 minutes max). Type <Ctrl-C> to return to menu";
+            ../menu/auto;
+            show_menu;
         ;;
 
         e) clear;
