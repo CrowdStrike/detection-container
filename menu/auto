@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+controlc()
+# Function to handle interrupts
+{
+  echo "User abort request..."
+  exit 
+}
+
+trap controlc 2
+
+# Get available tests
+flist=($(cd ./bin && ls -1 *.sh))
+length=${#flist[@]}
+
+# Set interval randomization limits
+mintime=100
+maxtime=1800
+difftime=$((maxtime-mintime+1))
+
+
+# Show what tests will be run
+for i in "${flist[@]}"
+do
+   tname=`echo $i|cut -d'.' -f1| tr '_' ' '`
+   echo "Adding test $tname"
+done
+
+#Initial test timeout
+timeout=5
+
+while true; do
+  sleep $timeout
+  testtorun=$(($RANDOM%$length))
+  ./bin/${flist[$testtorun]}
+  timeout=$(($(($RANDOM%$difftime))+mintime))
+  echo "Sleeping $timeout seconds"
+done
