@@ -1,0 +1,82 @@
+#!/bin/bash
+show_menu(){
+    normal=`echo "\033[m"`
+    menu=`echo "\033[36m"` #Blue
+    number=`echo "\033[33m"` #yellow
+    fggreen=`echo "\e[92m"`
+    fgred=`echo "\033[31m"`
+
+    mitems=(
+           "Informational"
+           "Low"
+           "Medium"
+           "High"
+           "Critical"
+           )
+
+    eitems=(
+           "crowdstrike_test_informational"
+           "crowdstrike_test_low"
+           "crowdstrike_test_medium"
+           "crowdstrike_test_high"
+           "crowdstrike_test_critical"
+           )
+    numitems=${#mitems[@]}
+
+    printf "\n${menu}     Select Overwatch test criticality level${normal}\n"
+    printf "\n${menu}*********************************************${normal}\n"
+
+    for (( i=1; i<=$numitems; i++ ))
+    do
+	    j=i-1
+	    printf "${menu}**${number} ${i})${menu} ${mitems[$j]} ${normal}\n"
+    done
+
+    printf "\n"
+    printf "${menu}**${number} x)${menu} Exit to main menu${normal}\n"
+    printf "${menu}*********************************************${normal}\n"
+    printf "Please enter a menu option and enter: "
+    read  opt
+}
+
+after_exec(){
+	read -p "Press enter to continue";
+	clear;
+	exit;
+}
+
+option_picked(){
+    msgcolor=`echo "\033[01;31m"` # bold red
+    normal=`echo "\033[00;00m"` # normal white
+    message=${@:-"${normal}Error: No message passed"}
+    printf "${msgcolor}${message}${normal}\n"
+}
+
+clear
+show_menu
+while  true
+    do
+    if [ $opt = '' ]; then
+      exit;
+    else
+      case $opt in
+        [1-${#mitems[@]}]) clear;
+	    m=$opt-1
+	    option_picked "$opt - ${mitems[$m]}"
+	    sh -c ${eitems[$m]} > /dev/null 2>&1;
+            after_exec;
+        ;;
+
+        x)exit;
+        ;;
+
+        \n)exit;
+        ;;
+
+        *)clear;
+            option_picked "Pick a valid option from the menu";
+            show_menu;
+        ;;
+      esac
+    fi
+done

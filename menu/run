@@ -6,16 +6,17 @@ show_menu(){
     fggreen=`echo "\e[92m"`
     fgred=`echo "\033[31m"`
     
-    version="1.6"
+    version="1.7"
 
     mitems=(
            "Medium - Defense Evasion via Masquerading"
            "Critical - Defense Evasion via Rootkit"
            "High - Execution via Command-Line Interface"
            "High - Exfiltration Over Alternative Protocol"
-           "High -$fggreen Command & Control via Remote Access Protocol"
+           "High -$fggreen Command & Control via Remote Access Tools"
            "High - Collection via Automated Collection"
            "High - Credential Access via Credential Dumping"
+           "High -$fggreen Persistance via External Remote Services"
            "High -$fggreen Malware Linux Trojan"
            )
 
@@ -29,6 +30,7 @@ show_menu(){
            "Command_Control_via_Remote_Access.sh"
            "Collection_via_Automated_Collection.sh"
 	   "Credential_Access_via_Credential_Dumping.sh" 
+	   "Persistence_via_External_Remote_Services.sh"
            "Malware_Linux_Trojan.sh"
            )
     numitems=${#mitems[@]}
@@ -45,6 +47,7 @@ show_menu(){
 
     printf "\n"
     printf "${menu}**${number} a)${menu} Automatically run random scripts${normal}\n"
+    printf "${menu}**${number} o)${menu} Generate Overwatch test detection${normal}\n"
     printf "\n"
     printf "${menu}**${number} e)${menu} Exit to Container shell${normal}\n"
     printf "${menu}**${number} x)${menu} Exit Container${normal}\n"
@@ -84,6 +87,13 @@ while  true
         a) clear;
             option_picked "This script will automatically generate random events at ransom interval (30 minutes max). Type <Ctrl-C> to return to menu";
             ../menu/auto;
+            show_menu;
+        ;;
+
+        o) clear;
+            option_picked "This menu will create a Falcon Overwatch test detection";
+            ../menu/ow;
+	    clear;
             show_menu;
         ;;
 
