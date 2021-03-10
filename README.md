@@ -1,5 +1,7 @@
 # CrowdStrike Docker Detection Container
 
+[![Container Repository on Quay](https://quay.io/repository/crowdstrike/detection-container/status "Container Repository on Quay")](https://quay.io/repository/crowdstrike/detection-container)
+
 This container will create detections and preventions on a Linux container protected by a CrowdStrike sensor.
 
 Automated detections currently available include:
