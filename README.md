@@ -14,8 +14,13 @@ Automated detections currently available include:
 * Collection via Automated Collection
 * Credential Access via Credential Dumping
 * Malware - Linux Trojan *
+* Webserver Suspicious Terminal Spawn
+* Webserver Unexpected Child of Web Service
+* Webserver Bash Reverse Shell *
+* Webserver Trigger Metasploit Payload **
 
-(*) marked items are eligible for Prevention if configured in policy
+(*) eligible for Prevention if configured in policy
+(**) container starting using exposed port (-p 8080:80) required and a Kali attack host ready. Note a detection will only occur once you execute commands via meterpreter!
 
 # Downloading & Usage
 
