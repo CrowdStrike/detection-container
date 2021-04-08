@@ -20,7 +20,10 @@ sh -c echo CS_testcontainer starting
 
 cd /home/eval/
 
-if [ -t 0 ] ; then
+if [ $# -ne 0 ]; then
+    # Arguments supplied, run the command specified in the arguments
+    bash -xc "$@"
+elif [ -t 0 ] ; then
     # Enter menu mode
     echo "(starting interactive shell)"
 

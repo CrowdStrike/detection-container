@@ -14,4 +14,4 @@ COPY entrypoint.sh /
 
 EXPOSE 80
 
-ENTRYPOINT /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
