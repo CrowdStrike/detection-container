@@ -18,17 +18,16 @@ sh -c echo CS_testcontainer starting
 #  Start webservices
 /usr/sbin/httpd -k start
 
-# Enter menu mode
+cd /home/eval/
+
 if [ -t 0 ] ; then
+    # Enter menu mode
     echo "(starting interactive shell)"
-    # Correct working directory
-    cd /home/eval/
 
     # Start menu
     ../menu/run
 else
     echo "(starting non-interactive shell)"
-    cd /home/eval
 
     # Start automatic run
     ../menu/auto
