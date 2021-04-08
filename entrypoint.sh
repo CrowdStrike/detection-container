@@ -18,17 +18,19 @@ sh -c echo CS_testcontainer starting
 #  Start webservices
 /usr/sbin/httpd -k start
 
-# Enter menu mode
-if [ -t 0 ] ; then
+cd /home/eval/
+
+if [ $# -ne 0 ]; then
+    # Arguments supplied, run the command specified in the arguments
+    bash -xc "$@"
+elif [ -t 0 ] ; then
+    # Enter menu mode
     echo "(starting interactive shell)"
-    # Correct working directory
-    cd /home/eval/
 
     # Start menu
     ../menu/run
 else
     echo "(starting non-interactive shell)"
-    cd /home/eval
 
     # Start automatic run
     ../menu/auto
