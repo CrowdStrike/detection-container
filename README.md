@@ -2,7 +2,7 @@
 
 [![Container Repository on Quay](https://quay.io/repository/crowdstrike/detection-container/status "Container Repository on Quay")](https://quay.io/repository/crowdstrike/detection-container)
 
-This container will create detections and preventions on a Linux container platform protected by a CrowdStrike sensor.
+This container will create detections and preventions only on Linux hosts and container platforms protected by a CrowdStrike sensor.
 
 Automated detections currently available include:
 | Name | Description |
