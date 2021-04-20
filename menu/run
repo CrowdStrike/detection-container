@@ -19,7 +19,7 @@ show_menu(){
            "High -$fggreen Persistance via External Remote Services"
 	   "High -$fggreen Malware Linux Trojan (remote download)"
 	   "High -$fggreen Malware Linux Trojan (local execution)"
-           "High -Webserver Suspicious Terminal Spawn"
+	   "High -Webserver Suspicious Terminal Spawn"
            "High -Webserver Unexpected Child of Web Service"
            "High -$fggreen Webserver Bash Reverse Shell"
            "Medium - Webserver Trigger Metasploit Payload"
