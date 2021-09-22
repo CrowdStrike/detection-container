@@ -28,7 +28,7 @@ do
 done
 
 #Initial test timeout
-timeout=5
+timeout=30
 
 while true; do
   sleep $timeout
