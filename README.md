@@ -5,21 +5,37 @@
 This container will create detections and preventions only on Linux hosts and container platforms protected by a CrowdStrike sensor.
 
 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 
+
 🔥 🚒 🛑 WARNING WARNING WARNING WARNING WARNING
+
 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 
+
 🔥 🚒 🛑 READ THIS BEFORE CONTINUING!
+
 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 
+
 🔥 🚒 🛑 This container image contains LIVE malware!
+
 🔥 🚒 🛑 
+
 🔥 🚒 🛑 A Falcon Prevent policy will kill the malware, 
+
 🔥 🚒 🛑 **if Falcon Prevent is enabled**.
+
 🔥 🚒 🛑 
+
 🔥 🚒 🛑 Should you chose to execute the malware test,
+
 🔥 🚒 🛑 _and if Falcon Prevent is NOT enabled_,
+
 🔥 🚒 🛑 the malware will collect system information and beacon that
+
 🔥 🚒 🛑 information back to the malware creators.
+
 🔥 🚒 🛑 
+
 🔥 🚒 🛑 DO NOT RUN THIS CONTAINER ON SENSITIVE SYSTEMS!
+
 🔥 🚒 🛑 
 
 
