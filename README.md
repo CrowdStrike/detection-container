@@ -4,41 +4,6 @@
 
 This container will create detections and preventions only on Linux hosts and container platforms protected by a CrowdStrike sensor.
 
-🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 
-
-🔥 🚒 🛑 WARNING WARNING WARNING WARNING WARNING
-
-🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 
-
-🔥 🚒 🛑 READ THIS BEFORE CONTINUING!
-
-🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 🔥 🚒 🛑 
-
-🔥 🚒 🛑 This container image contains LIVE malware!
-
-🔥 🚒 🛑 
-
-🔥 🚒 🛑 A Falcon Prevent policy will kill the malware, 
-
-🔥 🚒 🛑 **if Falcon Prevent is enabled**.
-
-🔥 🚒 🛑 
-
-🔥 🚒 🛑 Should you chose to execute the malware test,
-
-🔥 🚒 🛑 _and if Falcon Prevent is NOT enabled_,
-
-🔥 🚒 🛑 the malware will collect system information and beacon that
-
-🔥 🚒 🛑 information back to the malware creators.
-
-🔥 🚒 🛑 
-
-🔥 🚒 🛑 DO NOT RUN THIS CONTAINER ON SENSITIVE SYSTEMS!
-
-🔥 🚒 🛑 
-
-
 Automated detections currently available include:
 | Name | Description |
 |:-----|:------------|
@@ -49,8 +14,6 @@ Automated detections currently available include:
 | [Command & Control via Remote Access Protocol](https://github.com/CrowdStrike/detection-container/blob/main/bin/Command_Control_via_Remote_Access.sh) \* | Attempts to connect to a remote IP address and will exit at fork. Falcon Prevent will kill the attempt. |
 | [Collection via Automated Collection](https://github.com/CrowdStrike/detection-container/blob/main/bin/Collection_via_Automated_Collection.sh) | Attempts to dump credentials from `/etc/passwd` to `/tmp/passwords`. |
 | [Credential Access via Credential Dumping](https://github.com/CrowdStrike/detection-container/blob/main/bin/Credential_Access_via_Credential_Dumping.sh) | Runs mimipenguin and tries to dump passwords from inside the container environment. |
-| [Malware - Linux Trojan (local execution)](https://github.com/CrowdStrike/detection-container/blob/main/bin/Malware_Linux_Trojan_Local.sh) \* | Attempts to execute malware pre-loaded into the container. A Falcon Prevent policy will kill the process, if Falcon Prevent is enabled. |
-| [Malware - Linux Trojan (remote download)](https://github.com/CrowdStrike/detection-container/blob/main/bin/Malware_Linux_Trojan_Remote.sh) \* | Downloads malware from a remote target and attempts to execute it. A Falcon Prevent policy will kill the process, if Falcon Prevent is enabled. |
 | [Webserver Suspicious Terminal Spawn](https://github.com/CrowdStrike/detection-container/blob/main/bin/Webserver_Suspicious_Terminal_Spawn.sh) | Executes a command injection, which writes a file to local webserver then executes that script. |
 | [Webserver Unexpected Child of Web Service](https://github.com/CrowdStrike/detection-container/blob/main/bin/Webserver_Unexpected_Child_of_Web_Service.sh) |Executes command injection to dump MySQL Server tables of database running inside the detection container. |
 | [Webserver Bash Reverse Shell](https://github.com/CrowdStrike/detection-container/blob/main/bin/Webserver_Bash_Reverse_Shell.sh) \* | Executes command injection that creates a reverse shell over the web server running in the detection container. |
