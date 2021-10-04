@@ -1,16 +1,19 @@
 FROM registry.centos.org/centos/centos:7
 
-MAINTAINER The CrowdStrike Community
+MAINTAINER CrowdStrike
 
-RUN mkdir -p /home/eval/bin && \
-    mkdir /home/menu && \ 
-    yum -y update && yum -y install zip vim-common bind-utils ruby httpd php php-fpm && \
-    yum -y clean all && rm -rf /var/cache/yum
-
+COPY entrypoint.sh /
 COPY bin/ /home/eval/bin/
 COPY menu/* /home/menu/
 COPY www /var/www/html/
-COPY entrypoint.sh /
+
+RUN yum -y update && \
+    yum -y install wget file zip vim-common bind-utils ruby php httpd php-fpm && \
+    yum -y clean all && \
+    rm -rf /var/cache/yum && \
+    mkdir -p /home/eval/bin/mimipenguin && \
+    mkdir /home/menu && \
+    chmod +x /entrypoint.sh
 
 EXPOSE 80
 

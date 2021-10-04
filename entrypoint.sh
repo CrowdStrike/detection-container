@@ -26,11 +26,14 @@ if [ $# -ne 0 ]; then
 elif [ -t 0 ] ; then
     # Enter menu mode
     echo "(starting interactive shell)"
+    # Correct working directory
+    cd /home/eval/
 
     # Start menu
     ../menu/run
 else
     echo "(starting non-interactive shell)"
+    cd /home/eval
 
     # Start automatic run
     ../menu/auto
