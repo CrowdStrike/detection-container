@@ -2,9 +2,10 @@
 
 [![Container Repository on Quay](https://quay.io/repository/crowdstrike/detection-container/status "Container Repository on Quay")](https://quay.io/repository/crowdstrike/detection-container)
 
-This container will create detections and preventions only on Linux hosts and container platforms protected by a CrowdStrike sensor.
+This container will create detections and preventions only on Linux hosts, container platforms (e.g. OpenShift), and containers themselves, which are protected by a CrowdStrike sensor.
 
 Automated detections currently available include:
+
 | Name | Description |
 |:-----|:------------|
 | [Defense Evasion via Masquerading](https://github.com/CrowdStrike/detection-container/blob/main/bin/Defense_Evasion_via_Masquerading.sh) | Creates a copy of `/usr/bin/whoami` to `whoami.rtf` and executes it, causing a contradicting file extension. |
@@ -18,6 +19,7 @@ Automated detections currently available include:
 | [Webserver Unexpected Child of Web Service](https://github.com/CrowdStrike/detection-container/blob/main/bin/Webserver_Unexpected_Child_of_Web_Service.sh) |Executes command injection to dump MySQL Server tables of database running inside the detection container. |
 | [Webserver Bash Reverse Shell](https://github.com/CrowdStrike/detection-container/blob/main/bin/Webserver_Bash_Reverse_Shell.sh) \* | Executes command injection that creates a reverse shell over the web server running in the detection container. |
 | [Webserver Trigger Metasploit Payload](https://github.com/CrowdStrike/detection-container/blob/main/bin/metasploit/Webserver_Trigger_Metasploit_Payload.sh) \*\* | Simulates a malicious file upload, which executes a reverse TCP meterpreter to Kali. Please review the script for details on how to trigger this detection. |
+| [Reverse TCP Trojan (inert)](https://github.com/CrowdStrike/detection-container/blob/main/bin/Reverse_Shell_Trojan.sh) \* | Inert Trojan, written by CrowdStrike, that will attempt to connect to 192.168.0.1 on TCP port 4444. Tnis will be detected and killed by CrowdStrike's on-sensor machine learning with the aggressive policy settings. |
 
 (\*) eligible for Prevention if configured in policy
 (\*\*) container starting using exposed port (-p 8080:80) required and a Kali attack host ready. Note a detection will only occur once you execute commands via meterpreter!
