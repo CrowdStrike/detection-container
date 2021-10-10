@@ -1,4 +1,4 @@
-FROM registry.centos.org/centos/centos:7
+FROM centos:7
 
 MAINTAINER CrowdStrike
 
