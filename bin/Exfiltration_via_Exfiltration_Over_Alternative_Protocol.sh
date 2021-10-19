@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 echo -e "\e[92mExecuting Exfiltration Over Alternative Protocol using a DNS tool sendng requests to large domain names. This will take a moment to execute..." 
 
