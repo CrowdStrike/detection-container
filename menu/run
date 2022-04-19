@@ -81,17 +81,8 @@ option_picked(){
 }
 
 validate_numerical_option(){
-    # is it a number?
-    if ! [[ $1 =~ ^[0-9]+$ ]]; then
-        echo 1
-    else
-        # is it within range?
-        if [[ $1 -le $numitems && $1 -ge 1 ]]; then
-            echo 0
-        else
-            echo 1
-        fi
-    fi
+    # checks if $opt is a valid numerical option (if numerical)
+    [[ $1 =~ ^[0-9]+$ ]] && [[ $1 -le $numitems && $1 -ge 1 ]]
 }
 
 clear
@@ -102,7 +93,7 @@ do
         exit;
     else
         # Handle numerical options
-        if [[ $(validate_numerical_option "$opt") -eq 0 ]]; then
+        if validate_numerical_option "$opt"; then
             clear;
             m=$opt-1
             option_picked "$opt - ${mitems[$m]}"
