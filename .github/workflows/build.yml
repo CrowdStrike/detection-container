@@ -1,6 +1,9 @@
 name: Multi-arch build
 
-on: push
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
 
 env:
   IMAGE_TAG: latest
