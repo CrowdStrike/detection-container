@@ -22,12 +22,12 @@ Automated detections currently available include:
 | [Reverse TCP Trojan (inert)](https://github.com/CrowdStrike/detection-container/blob/main/bin/Reverse_Shell_Trojan.sh) \* | Inert Trojan, written by CrowdStrike, that will attempt to connect to 192.168.0.1 on TCP port 4444. Tnis will be detected and killed by CrowdStrike's on-sensor machine learning with the aggressive policy settings. |
 
 (\*) eligible for Prevention if configured in policy
-(\*\*) container starting using exposed port (-p 8080:80) required and a Kali attack host ready. Note a detection will only occur once you execute commands via meterpreter!
+(\*\*) container starting using exposed port (-p 8080:80) required and a Kali attack host ready. Please note that a detection will only occur once you execute commands via meterpreter!
 
 # Downloading & Usage
 
 ## Download via Quay.io
-Container images hosted at [https://quay.io/repository/crowdstrike/detection-container](https://quay.io/repository/crowdstrike/detection-container) are automatically rebuilt with every merged pull request. Pull this container with the following Docker (or podman!) command:
+Container images hosted at [https://quay.io/repository/crowdstrike/detection-container](https://quay.io/repository/crowdstrike/detection-container) are automatically rebuilt as mult-architecture images with every merged pull request. Pull this container with the following Docker (or podman!) command:
 
 Using Docker CLI:
 ```
@@ -38,6 +38,8 @@ Using Podman CLI:
 ```
 $ podman pull quay.io/crowdstrike/detection-container
 ```
+
+If a specific architecture is desired to be used, add the `--platform` flag with the desired architecture(s): `linux/arm64,linux/amd64,linux/s390x,linux/ppc64le`
 
 ## Build from Source
 Clone this repository and build the container using ``docker build`` or ``podman build``:
@@ -50,6 +52,11 @@ docker build -t <your_repository>/detection-container .
 Podman CLI:
 ```
 podman build -t <your_repository>/detection-container .
+```
+
+Multi-architecture Build (requires Docker with BuildKit):
+```
+make docker-buildx
 ```
 
 # Generate Sample Detections
