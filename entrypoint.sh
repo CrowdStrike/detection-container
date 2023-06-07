@@ -16,7 +16,7 @@ cp /bin/cat /bin/mysqldump
 sh -c echo CS_testcontainer starting
 
 #  Start webservices
-mkdir /run/php-fpm
+mkdir -p /run/php-fpm
 /usr/sbin/php-fpm
 /usr/sbin/httpd -k start
 
