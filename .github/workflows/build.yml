@@ -39,15 +39,12 @@ jobs:
           username: ${{ secrets.REGISTRY_LOGIN }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Setup Cross Compile Dockerfile
-        run: sed -e '1 s/\(^FROM\)/FROM --platform=$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=$\{BUILDPLATFORM\}/' Dockerfile > Dockerfile.cross
-
       - name: Build and push
         id: build_image_multiarch
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile.cross
+          file: ./Dockerfile
           platforms: linux/arm64,linux/amd64,linux/s390x,linux/ppc64le
           push: true
           tags: |
