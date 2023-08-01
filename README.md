@@ -30,13 +30,13 @@ Automated detections currently available include:
 Container images hosted at [https://quay.io/repository/crowdstrike/detection-container](https://quay.io/repository/crowdstrike/detection-container) are automatically rebuilt as mult-architecture images with every merged pull request. Pull this container with the following Docker (or podman!) command:
 
 Using Docker CLI:
-```
-$ docker pull quay.io/crowdstrike/detection-container
+```shell
+docker pull quay.io/crowdstrike/detection-container
 ```
 
 Using Podman CLI:
-```
-$ podman pull quay.io/crowdstrike/detection-container
+```shell
+podman pull quay.io/crowdstrike/detection-container
 ```
 
 If a specific architecture is desired to be used, add the `--platform` flag with the desired architecture(s): `linux/arm64,linux/amd64,linux/s390x,linux/ppc64le`
@@ -45,17 +45,17 @@ If a specific architecture is desired to be used, add the `--platform` flag with
 Clone this repository and build the container using ``docker build`` or ``podman build``:
 
 With Docker CLI:
-```
+```shell
 docker build -t <your_repository>/detection-container .
 ```
 
 Podman CLI:
-```
+```shell
 podman build -t <your_repository>/detection-container .
 ```
 
 Multi-architecture Build (requires Docker with BuildKit):
-```
+```shell
 make docker-buildx
 ```
 
@@ -69,8 +69,8 @@ The detection-container can used in one of two modes:
 ## Interactive Mode
 The following command will utilize Docker's interactive mode, present you with a text-based interface, and remove the container from your system after running:
 
-```
-$ sudo docker run --rm -it quay.io/crowdstrike/detection-container
+```shell
+sudo docker run --rm -it quay.io/crowdstrike/detection-container
 ```
 
 This will present a text user interface:
@@ -82,8 +82,8 @@ Enter the menu option of the detection you would like to create and hit enter. D
 Non-interactive mode will randomly create detections. Between each detection the container will pause for a randomized amount of time ranging from 100 to 1800 seconds (roughly 1.5 - 30 minutes). This pause ensures events trigger unique detections in the Falcon console that are not grouped together.
 
 The following command will run detection-container non-interactively:
-```
-$ sudo docker run --rm quay.io/crowdstrike/detection-container
+```shell
+sudo docker run --rm quay.io/crowdstrike/detection-container
 ```
 
 Output will be sent to the console (via ``stdout``) regarding what detections are being generated. An example of running in non-interactive mode, plus output, is shown below:
