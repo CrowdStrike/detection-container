@@ -24,80 +24,76 @@ Automated detections currently available include:
 (\*) eligible for Prevention if configured in policy
 (\*\*) container starting using exposed port (-p 8080:80) required and a Kali attack host ready. Please note that a detection will only occur once you execute commands via meterpreter!
 
-# Downloading & Usage
+## Downloading & Usage
 
-## Download via Quay.io
+### Download via Quay.io
+
 Container images hosted at [https://quay.io/repository/crowdstrike/detection-container](https://quay.io/repository/crowdstrike/detection-container) are automatically rebuilt as mult-architecture images with every merged pull request. Pull this container with the following Docker (or podman!) command:
 
 Using Docker CLI:
+
 ```shell
 docker pull quay.io/crowdstrike/detection-container
 ```
 
 Using Podman CLI:
+
 ```shell
 podman pull quay.io/crowdstrike/detection-container
 ```
 
 If a specific architecture is desired to be used, add the `--platform` flag with the desired architecture(s): `linux/arm64,linux/amd64,linux/s390x,linux/ppc64le`
 
-## Build from Source
+### Build from Source
+
 Clone this repository and build the container using ``docker build`` or ``podman build``:
 
 With Docker CLI:
+
 ```shell
 docker build -t <your_repository>/detection-container .
 ```
 
 Podman CLI:
+
 ```shell
 podman build -t <your_repository>/detection-container .
 ```
 
 Multi-architecture Build (requires Docker with BuildKit):
+
 ```shell
 make docker-buildx
 ```
 
-# Generate Sample Detections
-The detection-container can used in one of two modes:
+## Generate Sample Detections
 
-1. ``interactive`` mode, which will expose a TUI where you can select pre-canned scripts that will generate simple detections (e.g., "hit #1 for credential dumping!"). 
+The detection-container operates in one of two modes, suitable for both Docker and Kubernetes environments:
 
-2. ``non-interactive`` mode, which will randomly create detections. This is how CrowdStrike runs the detection-container internally as it will constantly create sample detections for product demos.
+### Interactive Mode
 
-## Interactive Mode
-The following command will utilize Docker's interactive mode, present you with a text-based interface, and remove the container from your system after running:
+This mode exposes a text-based user interface (TUI) for selecting pre-canned scripts to generate simple detections (e.g., "hit #1 for credential dumping!").
 
-```shell
+For Docker, use the following command to run the detection container interactively:
+
+```bash
 sudo docker run --rm -it quay.io/crowdstrike/detection-container
 ```
 
-This will present a text user interface:
-![detection-container Text User Interface](docs/images/cli-interface.png)
+For Kubernetes environments, refer to the [vulnapp project](https://github.com/CrowdStrike/vulnapp) for running the detection container interactively.
 
-Enter the menu option of the detection you would like to create and hit enter. Depending on which detection was selected you may be guided through additional menus.
+### Non-interactive Mode
 
-## Non-interactive Mode
-Non-interactive mode will randomly create detections. Between each detection the container will pause for a randomized amount of time ranging from 100 to 1800 seconds (roughly 1.5 - 30 minutes). This pause ensures events trigger unique detections in the Falcon console that are not grouped together.
+In this mode, detections are randomly generated with pauses between each to ensure uniqueness in the Falcon console. The pause duration ranges from 100 to 1800 seconds (approximately 1.5 to 30 minutes).
 
-The following command will run detection-container non-interactively:
-```shell
+For Docker, use the following command to run the detection container non-interactively:
+
+```bash
 sudo docker run --rm quay.io/crowdstrike/detection-container
 ```
 
-Output will be sent to the console (via ``stdout``) regarding what detections are being generated. An example of running in non-interactive mode, plus output, is shown below:
+For Kubernetes environments, use the following command to run the detection container non-interactively:
 
-![non-interactive mode](docs/images/non-interactive.png)
-
-## Kubernetes Interactive Mode
-
-For running the detection container in interactive mode on Kubernetes clusters, please see the [vulnapp project](https://github.com/CrowdStrike/vulnapp)
-
-## Kubernetes Non-interactive Mode
-
-For running the detection container in non-interactive mode which will randomly create detections, run the following command:
-```
-$ kubectl create -f https://raw.githubusercontent.com/CrowdStrike/detection-container/main/detections.example.com
-
+```bash
+kubectl create -f https://raw.githubusercontent.com/CrowdStrike/detection-container/main/detections.example.com
 ```
