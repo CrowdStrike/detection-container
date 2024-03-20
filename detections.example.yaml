@@ -1,0 +1,22 @@
+# kubectl apply -f detectioncontainer.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: detections.example.com
+spec:
+  selector:
+   matchLabels:
+      run: detections
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: detections
+    spec:
+      containers:
+          - name: detection-container
+            image: quay.io/crowdstrike/detection-container
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
