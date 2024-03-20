@@ -78,7 +78,7 @@ This mode exposes a text-based user interface (TUI) for selecting pre-canned scr
 
 An example of running in interactive mode is shown below:
 
-![detection-container Text User Interface](docs/images/cli-interface.png)
+<img src="docs/images/cli-interface.png" alt="detection-container Text User Interface" width=600 height=500>
 
 For Docker, use the following command to run the detection container interactively:
 
@@ -94,7 +94,7 @@ In this mode, detections are randomly generated with pauses between each to ensu
 
 Output will be sent to the console (via ``stdout``) regarding what detections are being generated. An example of running in non-interactive mode, plus output, is shown below:
 
-![non-interactive mode](docs/images/non-interactive.png)
+<img src="docs/images/non-interactive.png" alt="non-interactive mode" width="700" height="500">
 
 For Docker, use the following command to run the detection container non-interactively:
 
