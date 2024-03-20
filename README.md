@@ -76,6 +76,10 @@ The detection-container operates in one of two modes, suitable for both Docker a
 
 This mode exposes a text-based user interface (TUI) for selecting pre-canned scripts to generate simple detections (e.g., "hit #1 for credential dumping!").
 
+An example of running in interactive mode is shown below:
+
+![detection-container Text User Interface](docs/images/cli-interface.png)
+
 For Docker, use the following command to run the detection container interactively:
 
 ```bash
@@ -87,6 +91,10 @@ For Kubernetes environments, refer to the [vulnapp project](https://github.com/C
 ### Non-interactive Mode
 
 In this mode, detections are randomly generated with pauses between each to ensure uniqueness in the Falcon console. The pause duration ranges from 100 to 1800 seconds (approximately 1.5 to 30 minutes).
+
+Output will be sent to the console (via ``stdout``) regarding what detections are being generated. An example of running in non-interactive mode, plus output, is shown below:
+
+![non-interactive mode](docs/images/non-interactive.png)
 
 For Docker, use the following command to run the detection container non-interactively:
 
