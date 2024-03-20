@@ -21,8 +21,10 @@ Automated detections currently available include:
 | [Webserver Trigger Metasploit Payload](https://github.com/CrowdStrike/detection-container/blob/main/bin/metasploit/Webserver_Trigger_Metasploit_Payload.sh) \*\* | Simulates a malicious file upload, which executes a reverse TCP meterpreter to Kali. Please review the script for details on how to trigger this detection. |
 | [Reverse TCP Trojan (inert)](https://github.com/CrowdStrike/detection-container/blob/main/bin/Reverse_Shell_Trojan.sh) \* | Inert Trojan, written by CrowdStrike, that will attempt to connect to 192.168.0.1 on TCP port 4444. Tnis will be detected and killed by CrowdStrike's on-sensor machine learning with the aggressive policy settings. |
 
-(\*) eligible for Prevention if configured in policy
-(\*\*) container starting using exposed port (-p 8080:80) required and a Kali attack host ready. Please note that a detection will only occur once you execute commands via meterpreter!
+> [!NOTE]
+> (**\***) eligible for Prevention if configured in policy
+>
+> (**\*\***) container starting using exposed port (-p 8080:80) required and a Kali attack host ready. Please note that a detection will only occur once you execute commands via meterpreter!
 
 ## Downloading & Usage
 
