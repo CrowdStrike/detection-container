@@ -89,3 +89,15 @@ $ sudo docker run --rm quay.io/crowdstrike/detection-container
 Output will be sent to the console (via ``stdout``) regarding what detections are being generated. An example of running in non-interactive mode, plus output, is shown below:
 
 ![non-interactive mode](docs/images/non-interactive.png)
+
+## Kubernetes Interactive Mode
+
+For running the detection container in interactive mode on Kubernetes clusters, please see the [vulnapp project](https://github.com/CrowdStrike/vulnapp)
+
+## Kubernetes Non-interactive Mode
+
+For running the detection container in non-interactive mode which will randomly create detections, run the following command:
+```
+$ kubectl create -f https://raw.githubusercontent.com/CrowdStrike/detection-container/main/detections.example.com
+
+```
