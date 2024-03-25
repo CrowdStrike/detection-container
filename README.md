@@ -105,5 +105,5 @@ sudo docker run --rm quay.io/crowdstrike/detection-container
 For Kubernetes environments, use the following command to run the detection container non-interactively:
 
 ```bash
-kubectl create -f https://raw.githubusercontent.com/CrowdStrike/detection-container/main/detections.example.com
+kubectl create -f https://raw.githubusercontent.com/CrowdStrike/detection-container/main/detections.example.yaml
 ```
