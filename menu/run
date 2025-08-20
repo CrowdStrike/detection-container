@@ -10,7 +10,6 @@ show_menu(){
 
     mitems=(
            "Medium - Container Drift via File Creation and Execution"
-           "Medium - Defense Evasion via Masquerading"
            "Critical - Defense Evasion via Rootkit"
            "High - Execution via Command-Line Interface"
            "High - Exfiltration Over Alternative Protocol"
@@ -29,7 +28,6 @@ show_menu(){
 
     eitems=(
            "ContainerDrift_Via_File_Creation_and_Execution.sh"
-           "Defense_Evasion_via_Masquerading.sh"
            "Defense_Evasion_via_Rootkit.sh"
            "Execution_via_Command-Line_Interface.sh"
            "Exfiltration_via_Exfiltration_Over_Alternative_Protocol.sh > /dev/null 2>&1"
