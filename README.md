@@ -8,7 +8,6 @@ Automated detections currently available include:
 
 | Name | Description |
 |:-----|:------------|
-| [Defense Evasion via Masquerading](https://github.com/CrowdStrike/detection-container/blob/main/bin/Defense_Evasion_via_Masquerading.sh) | Creates a copy of `/usr/bin/whoami` to `whoami.rtf` and executes it, causing a contradicting file extension. |
 | [Defense Evasion via Rootkit](https://github.com/CrowdStrike/detection-container/blob/main/bin/Defense_Evasion_via_Rootkit.sh) | This script will change the group owner of `/etc/ld.so.preload` to `0`, indicative of a Jynx Rootkit. |
 | [Execution via Command-Line Interface](https://github.com/CrowdStrike/detection-container/blob/main/bin/Execution_via_Command-Line_Interface.sh) | Emulate malicious activity related to suspicious CLI commands. Runs the command `sh -c whoami '[S];pwd;echo [E]'`.|
 | [Exfiltration Over Alternative Protocol](https://github.com/CrowdStrike/detection-container/blob/main/bin/Exfiltration_via_Exfiltration_Over_Alternative_Protocol.sh) | Attempts to exfiltrate data using DNS dig requests that contain system data in the hostname. |
