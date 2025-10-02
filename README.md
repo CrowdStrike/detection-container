@@ -95,14 +95,63 @@ Output will be sent to the console (via ``stdout``) regarding what detections ar
 
 <img src="docs/images/non-interactive.png" alt="non-interactive mode" width="700" height="500">
 
+#### Docker (Non-interactive Mode)
 For Docker, use the following command to run the detection container non-interactively:
 
 ```bash
 sudo docker run --rm quay.io/crowdstrike/detection-container
 ```
 
+#### Kubernetes (Non-interactive Mode)
 For Kubernetes environments, use the following command to run the detection container non-interactively:
 
 ```bash
 kubectl create -f https://raw.githubusercontent.com/CrowdStrike/detection-container/main/detections.example.yaml
 ```
+
+#### ECS Fargate (Non-interactive Mode)
+
+For AWS ECS Fargate, use the following commands to run the detection container:
+
+1. Create the CloudWatch log group if it doesn't already exist. Make sure to replace the region with your own:
+   ```bash
+   AWS_REGION="us-east-1"
+
+   aws logs create-log-group \
+     --log-group-name /ecs/detection-container \
+     --region $AWS_REGION
+   ```
+
+3. Update and register the task definition:
+   ```bash
+   ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+   # Update task definition with your account ID and region
+   sed -i "s/ACCOUNT_ID/$ACCOUNT_ID/g" ecs-task-definition.json
+   sed -i "s/AWS_REGION/$AWS_REGION/g" ecs-task-definition.json
+
+   # Register the task definition
+   aws ecs register-task-definition \
+     --cli-input-json file://ecs-task-definition.json
+   ```
+
+4. Run the task. Make sure to replace `YOUR_CLUSTER`, `YOUR_SUBNET`, and `YOUR_SG` with your own values:
+   ```bash
+   aws ecs run-task \
+     --cluster YOUR_CLUSTER \
+     --task-definition detection-container \
+     --launch-type FARGATE \
+     --network-configuration "awsvpcConfiguration={subnets=[YOUR_SUBNET],securityGroups=[YOUR_SG],assignPublicIp=ENABLED}"
+   ```
+
+5. View the logs in CloudWatch:
+   ```bash
+   # View logs in real-time (replace region if needed)
+   aws logs tail /ecs/detection-container --follow --region us-east-1
+   ```
+
+> [!NOTE]
+> For ECS Fargate deployment, ensure:
+> - The ECS execution role has permissions to pull images and write to CloudWatch Logs
+> - The CloudWatch log group is created before running the task
+> - CrowdStrike Falcon Container Sensor is deployed for detections to appear in the console
