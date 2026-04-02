@@ -6,23 +6,15 @@ echo -e "\e[92mExecuting an inert trojan that will attempt to connect to 192.168
 ARCH=$(uname -m)
 case "$ARCH" in
     x86_64|amd64)
-        # Use original x86 sample binary
-        ./bin/evil/sample
+        # Use original x86_64 sample binary
+        ./bin/evil/sample-x86_64
         ;;
     aarch64|arm64)
         # Use arm64 binary if available
-        if [ -f "./bin/evil/sample-arm64" ]; then
-            ./bin/evil/sample-arm64
-        else
-            echo -e "\e[93mWarning: No arm64-compatible trojan binary available."
-            echo -e "This detection requires an architecture-specific binary that is not currently included."
-            echo -e "The detection container will skip this test on arm64 systems.\e[0m"
-            exit 0
-        fi
+        ./bin/evil/sample-aarch64
         ;;
     *)
         echo -e "\e[91mError: Unsupported architecture: $ARCH"
-        echo -e "Supported architectures: x86_64, arm64\e[0m"
         exit 1
         ;;
 esac
