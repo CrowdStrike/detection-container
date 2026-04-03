@@ -19,6 +19,7 @@ Automated detections currently available include:
 | [Webserver Bash Reverse Shell](https://github.com/CrowdStrike/detection-container/blob/main/bin/Webserver_Bash_Reverse_Shell.sh) \* | Executes command injection that creates a reverse shell over the web server running in the detection container. |
 | [Webserver Trigger Metasploit Payload](https://github.com/CrowdStrike/detection-container/blob/main/bin/metasploit/Webserver_Trigger_Metasploit_Payload.sh) \*\* | Simulates a malicious file upload, which executes a reverse TCP meterpreter to Kali. Please review the script for details on how to trigger this detection. |
 | [Reverse TCP Trojan (inert)](https://github.com/CrowdStrike/detection-container/blob/main/bin/Reverse_Shell_Trojan.sh) \* | Inert Trojan, written by CrowdStrike, that will attempt to connect to 192.168.0.1 on TCP port 4444. Tnis will be detected and killed by CrowdStrike's on-sensor machine learning with the aggressive policy settings. |
+| [Impact via Data Encrypted for Impact](https://github.com/CrowdStrike/detection-container/blob/main/bin/Impact_via_Data_Encrypted_for_Impact.sh) | Ransomware simulation that creates a temporary file and renames it with the `.lockbit` extension to simulate file encryption. |
 
 > [!NOTE]
 > (**\***) eligible for Prevention if configured in policy

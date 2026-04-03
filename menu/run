@@ -22,6 +22,7 @@ show_menu(){
            "High -$fggreen Webserver Bash Reverse Shell"
            "Medium - Webserver Trigger Metasploit Payload"
            "High - (inert) Reverse TCP Trojan"
+           "High - Impact via Data Encrypted for Impact"
            )
 
     edir='/home/eval/bin/'
@@ -40,6 +41,7 @@ show_menu(){
            "Webserver_Bash_Reverse_Shell.sh"
            "metasploit/Webserver_Trigger_Metasploit_Payload.sh"
            "Reverse_Shell_Trojan.sh"
+           "Impact_via_Data_Encrypted_for_Impact.sh"
            )
 
     numitems=${#mitems[@]}
