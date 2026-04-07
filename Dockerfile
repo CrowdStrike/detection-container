@@ -14,7 +14,6 @@ COPY menu/* /home/menu/
 COPY www /var/www/html/
 
 RUN dnf -y install wget file zip vim-common bind-utils ruby php httpd php-fpm hostname ncurses binutils python-unversioned-command procps-ng iputils && \
-    dnf -y update && \
     dnf -y clean all && \
     rm -rf /var/cache/yum && \
     mkdir -p /home/eval/bin/mimipenguin && \
