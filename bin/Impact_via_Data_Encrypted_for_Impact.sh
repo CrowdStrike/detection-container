@@ -1,4 +1,7 @@
 #!/bin/sh
+# Shortname: ransomware
+# Description: Simulates LockBit file encryption by renaming files with the
+#   .lockbit extension
 #
 # Impact via Data Encrypted for Impact
 # LockBit-style ransomware simulation

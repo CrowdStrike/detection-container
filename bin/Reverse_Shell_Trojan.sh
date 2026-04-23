@@ -1,4 +1,6 @@
 #!/bin/sh
+# Shortname: reverse_shell_trojan
+# Description: Executes an inert trojan that will attempt to connect to 192.168.0.1 on TCP port 444. Aggressive Machine Learning prevention policy settings will kill the attempt.
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
