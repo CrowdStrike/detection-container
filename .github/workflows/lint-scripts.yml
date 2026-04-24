@@ -1,0 +1,50 @@
+name: Lint script headers
+
+on:
+  pull_request:
+    paths:
+      - 'bin/*.sh'
+  push:
+    paths:
+      - 'bin/*.sh'
+
+jobs:
+  check-headers:
+    name: Validate bin/ script headers
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Check script headers
+        run: |
+          failed=0
+          for script in bin/*.sh; do
+            [ -f "$script" ] || continue
+            name=$(basename "$script")
+            line1=$(sed -n '1p' "$script")
+            line2=$(sed -n '2p' "$script")
+            line3=$(sed -n '3p' "$script")
+
+            if ! echo "$line1" | grep -qE '^#!'; then
+              echo "FAIL: $name: line 1 is not a shebang (got: $line1)"
+              failed=1
+              continue
+            fi
+            if ! echo "$line2" | grep -qE '^# Shortname: .+'; then
+              echo "FAIL: $name: line 2 missing '# Shortname: <name>' (got: $line2)"
+              failed=1
+            fi
+            if ! echo "$line3" | grep -qE '^# Description: .+'; then
+              echo "FAIL: $name: line 3 missing '# Description: <text>' (got: $line3)"
+              failed=1
+            fi
+          done
+
+          if [ "$failed" -eq 0 ]; then
+            echo "OK: all scripts in bin/ have valid headers"
+          fi
+          exit "$failed"

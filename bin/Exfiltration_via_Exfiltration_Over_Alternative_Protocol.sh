@@ -1,6 +1,8 @@
 #!/bin/bash
+# Shortname: data_exfiltration
+# Description: Attempts to exfiltrate data using DNS dig requests that contain system data in the hostname.
 
-echo -e "\e[92mExecuting Exfiltration Over Alternative Protocol using a DNS tool sendng requests to large domain names. This will take a moment to execute..." 
+echo -e "\e[92mExecuting Exfiltration Over Alternative Protocol using a DNS tool sending requests to large domain names. This will take a moment to execute..." 
 
 cd /tmp
 touch {1..7}.tmp
