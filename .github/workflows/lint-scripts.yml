@@ -44,6 +44,15 @@ jobs:
             fi
           done
 
+          dupes=$(sed -n '2p' bin/*.sh | grep -oP '(?<=^# Shortname: ).+' | sort | uniq -d)
+          if [ -n "$dupes" ]; then
+            for name in $dupes; do
+              echo "FAIL: duplicate shortname '$name' found in:"
+              grep -rl "^# Shortname: $name$" bin/*.sh | sed 's/^/  /'
+            done
+            failed=1
+          fi
+
           if [ "$failed" -eq 0 ]; then
             echo "OK: all scripts in bin/ have valid headers"
           fi
