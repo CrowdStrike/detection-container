@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: remote_service_persistence
+# Severity: High
 # Description: Attempts to create persistence to 192.168.1.222 via External Remote Services via Python script. Falcon Prevent will kill the attempt.
 
 echo -e "\e[92mExecuting Persistence via External Remote Services via Python script. This script will try creating persistence to 192.168.1.222. A Falcon Prevent action can kill the attempt."

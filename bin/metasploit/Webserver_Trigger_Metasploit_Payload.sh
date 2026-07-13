@@ -1,4 +1,5 @@
 #/bin/sh
+# Severity: Medium
 
 echo -e "\e[92mSimulate a malicious file upload, which executes a reverse TCP meterpreter to Kali on port 4444\n"
 echo -e "This scenario is multi-step, please follow these actions before confirming the Kali IP address:\n"

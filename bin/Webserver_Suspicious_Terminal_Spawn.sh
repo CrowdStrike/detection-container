@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: command_injection-suspicious_terminal
+# Severity: High
 # Description: Executes a command injection to Spawn a Suspicious Terminal using PHP.
 
 echo -e "\e[92mExecuting Command Injection to Spawn a Suspicious Terminal. This script executes a command injection, which writes a file to http://webserver/uploads/test.php, then executes that script"

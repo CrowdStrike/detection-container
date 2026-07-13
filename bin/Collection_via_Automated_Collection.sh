@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: credentials_dumping_collection
+# Severity: High
 # Description: Attempts to dump credentials from /etc/passwd to /tmp/passwords.
 
 echo -e "\e[92mExecuting Collection via Automated Collection script. Trying to dump information from etc/passwd"

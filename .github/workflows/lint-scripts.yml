@@ -28,6 +28,7 @@ jobs:
             line1=$(sed -n '1p' "$script")
             line2=$(sed -n '2p' "$script")
             line3=$(sed -n '3p' "$script")
+            line4=$(sed -n '4p' "$script")
 
             if ! echo "$line1" | grep -qE '^#!'; then
               echo "FAIL: $name: line 1 is not a shebang (got: $line1)"
@@ -38,8 +39,12 @@ jobs:
               echo "FAIL: $name: line 2 missing '# Shortname: <name>' (got: $line2)"
               failed=1
             fi
-            if ! echo "$line3" | grep -qE '^# Description: .+'; then
-              echo "FAIL: $name: line 3 missing '# Description: <text>' (got: $line3)"
+            if ! echo "$line3" | grep -qE '^# Severity: (Critical|High|Medium|Low)$'; then
+              echo "FAIL: $name: line 3 missing '# Severity: <Critical|High|Medium|Low>' (got: $line3)"
+              failed=1
+            fi
+            if ! echo "$line4" | grep -qE '^# Description: .+'; then
+              echo "FAIL: $name: line 4 missing '# Description: <text>' (got: $line4)"
               failed=1
             fi
           done

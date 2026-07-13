@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: container_drift
+# Severity: Medium
 # Description: Container Drift via file creation script. Creating a file and then executing it.
 
 echo -e "\e[92mExecuting Container Drift via file creation script. Creating a file and then executing it."

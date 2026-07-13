@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: data_exfiltration-reverse_shell
+# Severity: High
 # Description: Attempts Command Injection to execute reverse shell.
 
 echo -e "\e[92mExecuting Command Injection to execute reverse shell."

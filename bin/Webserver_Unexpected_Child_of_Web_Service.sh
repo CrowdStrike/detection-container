@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: data_exfiltration-mysql
+# Severity: High
 # Description: Executing Command Injection to dump MySQL Server tables.
 
 echo -e "\e[92mExecuting Command Injection to dump MySQL Server tables."
