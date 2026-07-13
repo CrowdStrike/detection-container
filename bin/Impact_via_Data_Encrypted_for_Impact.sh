@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: ransomware
+# Severity: High
 # Description: Simulates LockBit file encryption by renaming files with the
 #   .lockbit extension
 #

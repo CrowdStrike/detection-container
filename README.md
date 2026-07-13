@@ -86,7 +86,11 @@ For Docker, use the following command to run the detection container interactive
 sudo docker run --rm -it quay.io/crowdstrike/detection-container
 ```
 
-For Kubernetes environments, refer to the [vulnapp project](https://github.com/CrowdStrike/vulnapp) for running the detection container interactively.
+For a graphical, browser-based experience, see [Web Frontend (VulnApp)](#web-frontend-vulnapp) below.
+
+### Web Frontend (VulnApp)
+
+[VulnApp](https://github.com/CrowdStrike/vulnapp) wraps this detection container in a Go web application, giving you a graphical, browser-based way to trigger detections instead of the TUI. It ships deployment manifests for both generic Kubernetes and OpenShift. See the [vulnapp project](https://github.com/CrowdStrike/vulnapp) for setup and deployment instructions.
 
 ### Non-interactive Mode
 

@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: reverse_shell-obfuscated
+# Severity: High
 # Description: Attempts to connect to a remote IP address and will exit at
 #   fork. Falcon Prevent will kill the attempt. (obfuscated version)
 

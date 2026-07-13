@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: reverse_shell
+# Severity: High
 # Description: Attempts to connect to a remote IP address and will exit at fork. Falcon Prevent will kill the attempt.
 
 echo -e "\e[92mExecuting Command and Control via Remote Access Tools using Ruby script. This script will try to connect to 192.168.1.222 and will exit at fork. A Falcon Prevent action can kill the attempt"

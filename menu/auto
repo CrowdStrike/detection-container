@@ -5,13 +5,136 @@ controlc()
 # Function to handle interrupts
 {
   echo "User abort request..."
-  exit 
+  exit
 }
 
 trap controlc 2
 
-# Get available tests
-flist=($(cd ./bin && ls -1 *.sh))
+# Scenario scripts live here; override SCENARIO_DIR for local testing.
+SCENARIO_DIR="${SCENARIO_DIR:-/home/eval/scenarios}"
+# Detection scenarios provided by the upstream base image.
+DETECTIONS_DIR="${DETECTIONS_DIR:-/home/eval/bin}"
+
+# scenario_field FILE FIELD — echo the value of a "# Field:" header comment,
+# read from the first lines of a scenario script. Case-insensitive field match.
+# Mirrors the helper in menu/run so both derive the scenario list the same way.
+scenario_field(){
+    local file="$1" field="$2"
+    grep -iE "^# ${field}:" "$file" 2>/dev/null | head -1 | cut -d: -f2- | sed -E 's/^[[:space:]]+//'
+}
+
+# discover FILE... — emit one "display_name<US>shortname<US>script_path" line
+# per existing script (US = ASCII unit separator \037), ordered by each script's
+# "# Order:" header (ascending; missing order defaults to 9999, then
+# alphabetical). Name falls back to the filename; shortname comes from
+# "# Shortname:" (may be empty). A non-whitespace separator is required: with a
+# tab separator, `read` collapses the two tabs around an empty shortname and
+# shifts the path into the wrong field. Same helper as menu/run.
+discover(){
+    local sorted f order
+    sorted=$(
+        for f in "$@"; do
+            [ -e "$f" ] || continue
+            order=$(scenario_field "$f" "Order")
+            [[ "$order" =~ ^[0-9]+$ ]] || order=9999
+            printf '%s\t%s\n' "$order" "$f"
+        done | sort -k1,1n -k2,2
+    )
+    [ -z "$sorted" ] && return
+
+    local path name shortname
+    while IFS=$'\t' read -r _ path; do
+        name=$(scenario_field "$path" "Name")
+        if [ -z "$name" ]; then
+            name=$(basename "$path" .sh | tr '_' ' ')
+        fi
+        shortname=$(scenario_field "$path" "Shortname")
+        printf '%s\037%s\037%s\n' "$name" "$shortname" "$path"
+    done <<< "$sorted"
+}
+
+# run_scenarios SELECTION — non-interactive driver for the RUN_SCENARIOS env var.
+# SELECTION is "all" or a comma-separated list of scenario numbers and/or
+# "# Shortname:" slugs (e.g. "1,supply_chain_attack,3"). Numbers and shortnames
+# resolve against the SCENARIO_DIR scenarios, ordered by "# Order:" — the
+# base-image detections in DETECTIONS_DIR are NOT included. Runs each selection
+# once, in the order given, and exits non-zero if any token could not be resolved.
+run_scenarios(){
+    local selection="$1"
+
+    # Scenario list only — RUN_SCENARIOS covers SCENARIO_DIR scripts, not the
+    # base-image detections. Parallel arrays of shortname + path, indexed 1..N by
+    # position (number == index + 1), matching the numbers menu/run shows.
+    local shorts=() paths=()
+    while IFS=$'\037' read -r name short path; do
+        [ -z "$name" ] && continue
+        shorts+=("$short"); paths+=("$path")
+    done < <(discover "$SCENARIO_DIR"/*.sh)
+
+    # Build the ordered list of scripts to run.
+    local to_run=() rc=0 tok i found
+
+    if [ "$selection" = "all" ]; then
+        to_run=("${paths[@]}")
+    else
+        IFS=',' read -ra tokens <<< "$selection"
+        for tok in "${tokens[@]}"; do
+            tok="${tok#"${tok%%[![:space:]]*}"}"  # trim leading space
+            tok="${tok%"${tok##*[![:space:]]}"}"  # trim trailing space
+            [ -z "$tok" ] && continue
+
+            if [[ "$tok" =~ ^[0-9]+$ ]]; then
+                if [ "$tok" -ge 1 ] && [ "$tok" -le "${#paths[@]}" ]; then
+                    to_run+=("${paths[$((tok-1))]}")
+                else
+                    echo "[ERROR] Invalid scenario number: '$tok' (valid: 1-${#paths[@]})" >&2
+                    rc=1
+                fi
+                continue
+            fi
+
+            # Shortname match (case-insensitive) against the combined list.
+            found=""
+            for i in "${!shorts[@]}"; do
+                if [ "$(echo "${shorts[$i]}" | tr '[:upper:]' '[:lower:]')" = "$(echo "$tok" | tr '[:upper:]' '[:lower:]')" ]; then
+                    found="${paths[$i]}"; break
+                fi
+            done
+
+            if [ -n "$found" ]; then
+                to_run+=("$found")
+            else
+                echo "[ERROR] Unknown scenario: '$tok' (use a number 1-${#paths[@]} or a # Shortname: slug)" >&2
+                rc=1
+            fi
+        done
+    fi
+
+    # Execute the resolved scripts once each, in order.
+    local script
+    for script in "${to_run[@]}"; do
+        echo ""
+        echo "=== Running $(basename "$script") ==="
+        sh -c 'echo CS_testcontainer'
+        "$script" || echo "[WARN] $(basename "$script") exited $?"
+    done
+
+    return $rc
+}
+
+# Non-interactive entry: if RUN_SCENARIOS is set, resolve and run it, then exit.
+if [ -n "${RUN_SCENARIOS:-}" ]; then
+    run_scenarios "$RUN_SCENARIOS"
+    exit $?
+fi
+
+# Default (no RUN_SCENARIOS): random-interval loop over scenarios + detections.
+# Get available tests: scenarios first, then base-image detections. Full paths so
+# both directories can be drawn from a single list.
+flist=()
+for f in "$SCENARIO_DIR"/*.sh "$DETECTIONS_DIR"/*.sh; do
+  [ -e "$f" ] && flist+=("$f")
+done
 length=${#flist[@]}
 
 # Set interval randomization limits
@@ -23,7 +146,7 @@ difftime=$((maxtime-mintime+1))
 # Show what tests will be run
 for i in "${flist[@]}"
 do
-   tname=`echo $i|cut -d'.' -f1| tr '_' ' '`
+   tname=`basename "$i" | cut -d'.' -f1 | tr '_' ' '`
    echo "Adding test $tname"
 done
 
@@ -34,7 +157,7 @@ while true; do
   sleep $timeout
   testtorun=$(($RANDOM%$length))
   sh -c echo CS_testcontainer
-  ./bin/${flist[$testtorun]}
+  "${flist[$testtorun]}"
   timeout=$(($(($RANDOM%$difftime))+mintime))
   echo "Sleeping $timeout seconds"
 done

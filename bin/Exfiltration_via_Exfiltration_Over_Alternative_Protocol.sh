@@ -1,5 +1,6 @@
 #!/bin/bash
 # Shortname: data_exfiltration-alternate_protocol
+# Severity: High
 # Description: Attempts to exfiltrate data using DNS dig requests that contain system data in the hostname.
 
 echo -e "\e[92mExecuting Exfiltration Over Alternative Protocol using a DNS tool sending requests to large domain names. This will take a moment to execute..." 

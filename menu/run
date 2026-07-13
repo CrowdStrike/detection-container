@@ -1,48 +1,60 @@
 #!/bin/bash
+
+# Scenario scripts live here; override SCENARIO_DIR for local testing.
+SCENARIO_DIR="${SCENARIO_DIR:-/home/eval/scenarios}"
+# Legacy detection scenarios provided by the upstream base image.
+DETECTIONS_DIR="${DETECTIONS_DIR:-/home/eval/bin}"
+
+# ── Colors ──────────────────────────────────────────────────────────────────
+normal="\033[m"
+menu="\033[36m"   # blue
+number="\033[33m" # yellow
+fggreen="\e[92m"
+fgred="\033[31m"
+
+# scenario_field FILE FIELD — echo the value of a "# Field:" header comment,
+# read from the first lines of a scenario script. Case-insensitive field match.
+scenario_field(){
+    local file="$1" field="$2"
+    grep -iE "^# ${field}:" "$file" 2>/dev/null | head -1 | cut -d: -f2- | sed -E 's/^[[:space:]]+//'
+}
+
+# discover FILE... — emit one "display_name<US>shortname<US>script_path" line
+# per existing script (US = ASCII unit separator \037), ordered by each script's
+# "# Order:" header (ascending; missing order defaults to 9999, then
+# alphabetical). Display name comes from the "# Name:" header, falling back to
+# the filename (underscores -> spaces). Shortname comes from the "# Shortname:"
+# header (may be empty). A non-whitespace separator is required: with a tab
+# separator, `read` collapses the two tabs around an empty shortname and shifts
+# the path into the wrong field. Callers read the output into their own parallel
+# arrays. The same helper lives in menu/auto, which resolves RUN_SCENARIOS
+# numbers/shortnames against this list.
+discover(){
+    local sorted f order
+    sorted=$(
+        for f in "$@"; do
+            [ -e "$f" ] || continue
+            order=$(scenario_field "$f" "Order")
+            [[ "$order" =~ ^[0-9]+$ ]] || order=9999
+            printf '%s\t%s\n' "$order" "$f"
+        done | sort -k1,1n -k2,2
+    )
+    [ -z "$sorted" ] && return
+
+    local path name shortname
+    while IFS=$'\t' read -r _ path; do
+        name=$(scenario_field "$path" "Name")
+        if [ -z "$name" ]; then
+            # Fallback: filename without extension, underscores -> spaces.
+            name=$(basename "$path" .sh | tr '_' ' ')
+        fi
+        shortname=$(scenario_field "$path" "Shortname")
+        printf '%s\037%s\037%s\n' "$name" "$shortname" "$path"
+    done <<< "$sorted"
+}
+
 show_menu(){
-    normal="\033[m"
-    menu="\033[36m" #Blue
-    number="\033[33m" #yellow
-    fggreen="\e[92m"
-    fgred="\033[31m"
-
     version="1.8"
-
-    mitems=(
-           "Medium - Container Drift via File Creation and Execution"
-           "Critical - Defense Evasion via Rootkit"
-           "High - Execution via Command-Line Interface"
-           "High - Exfiltration Over Alternative Protocol"
-           "High -$fggreen Command & Control via Remote Access Tools"
-           "High - Collection via Automated Collection"
-           "High - Credential Access via Credential Dumping"
-           "High -$fggreen Persistance via External Remote Services"
-           "High -Webserver Suspicious Terminal Spawn"
-           "High -Webserver Unexpected Child of Web Service"
-           "High -$fggreen Webserver Bash Reverse Shell"
-           "Medium - Webserver Trigger Metasploit Payload"
-           "High - (inert) Reverse TCP Trojan"
-           "High - Impact via Data Encrypted for Impact"
-           )
-
-    edir='/home/eval/bin/'
-
-    eitems=(
-           "ContainerDrift_Via_File_Creation_and_Execution.sh"
-           "Defense_Evasion_via_Rootkit.sh"
-           "Execution_via_Command-Line_Interface.sh"
-           "Exfiltration_via_Exfiltration_Over_Alternative_Protocol.sh > /dev/null 2>&1"
-           "Command_Control_via_Remote_Access.sh"
-           "Collection_via_Automated_Collection.sh"
-           "Credential_Access_via_Credential_Dumping.sh"
-           "Persistence_via_External_Remote_Services.sh"
-           "Webserver_Suspicious_Terminal_Spawn.sh"
-           "Webserver_Unexpected_Child_of_Web_Service.sh"
-           "Webserver_Bash_Reverse_Shell.sh"
-           "metasploit/Webserver_Trigger_Metasploit_Payload.sh"
-           "Reverse_Shell_Trojan.sh"
-           "Impact_via_Data_Encrypted_for_Impact.sh"
-           )
 
     numitems=${#mitems[@]}
 
@@ -59,12 +71,67 @@ show_menu(){
     printf "\n"
     printf "${menu}**${number} a)${menu} Automatically run random scripts${normal}\n"
     printf "${menu}**${number} o)${menu} Generate Overwatch test detection${normal}\n"
+    if [ "$show_submenu" = "1" ]; then
+        printf "${menu}**${number} d)${menu} Additional Detections${normal}\n"
+    fi
     printf "\n"
     printf "${menu}**${number} e)${menu} Exit to Container shell${normal}\n"
     printf "${menu}**${number} x)${menu} Exit Container${normal}\n"
     printf "${menu}*********************************************${normal}\n"
     printf "Please enter a menu option and enter: "
     read opt
+}
+
+# show_detections_menu — submenu listing the upstream base-image detections from
+# DETECTIONS_DIR. Loops until the user picks "b" (back) or enters a blank line.
+show_detections_menu(){
+    local dnumitems=${#dmitems[@]}
+    local dopt i j m
+    while true
+    do
+        clear
+        printf "\n${menu}     Additional Detections${normal}\n"
+        printf "\n${menu}*********************************************${normal}\n"
+        for (( i=1; i<=dnumitems; i++ ))
+        do
+            j=$((i - 1))
+            printf "${menu}**${number} ${i})${menu} ${dmitems[$j]} ${normal}\n"
+        done
+        printf "\n"
+        printf "${menu}**${number} b)${menu} Back to main menu${normal}\n"
+        printf "${menu}**${number} e)${menu} Exit to Container shell${normal}\n"
+        printf "${menu}**${number} x)${menu} Exit Container${normal}\n"
+        printf "${menu}*********************************************${normal}\n"
+        printf "Please enter a menu option and enter: "
+        read dopt
+
+        if [[ $dopt =~ ^[0-9]+$ ]] && [[ $dopt -le $dnumitems && $dopt -ge 1 ]]; then
+            clear
+            m=$((dopt - 1))
+            option_picked "$dopt - ${dmitems[$m]}"
+            # Discovered paths contain no spaces; quote to be safe.
+            "${deitems[$m]}";
+            read -p "Press enter to continue";
+        else
+            case $dopt in
+                b|'')
+                    return
+                ;;
+                e)
+                    clear;
+                    option_picked "Type exit to return to the detections menu";
+                    /bin/bash;
+                ;;
+                x|q)
+                    exit;
+                ;;
+                *)
+                    option_picked "Pick a valid option from the menu"
+                    read -p "Press enter to continue";
+                ;;
+            esac
+        fi
+    done
 }
 
 after_exec(){
@@ -85,6 +152,34 @@ validate_numerical_option(){
     [[ $1 =~ ^[0-9]+$ ]] && [[ $1 -le $numitems && $1 -ge 1 ]]
 }
 
+# Main menu = scenarios from SCENARIO_DIR. Detections from DETECTIONS_DIR go into
+# a separate list surfaced through the "Additional Detections" submenu.
+mitems=(); eitems=()
+while IFS=$'\037' read -r name _ path; do
+    [ -z "$name" ] && continue
+    mitems+=("$name"); eitems+=("$path")
+done < <(discover "$SCENARIO_DIR"/*.sh)
+
+dmitems=(); deitems=()
+while IFS=$'\037' read -r name _ path; do
+    [ -z "$name" ] && continue
+    # Prefix the display name with the detection's "# Severity:" header (e.g.
+    # "Critical - Defense Evasion via Rootkit"), matching the upstream menu.
+    sev=$(scenario_field "$path" "Severity")
+    [ -n "$sev" ] && name="$sev - $name"
+    dmitems+=("$name"); deitems+=("$path")
+done < <(discover "$DETECTIONS_DIR"/*.sh "$DETECTIONS_DIR"/metasploit/*.sh)
+
+# Show the submenu only when there are scenarios to sit alongside it. With no
+# scenarios, present the detections directly as the main menu (legacy behavior).
+show_submenu=0
+if [ ${#mitems[@]} -gt 0 ] && [ ${#dmitems[@]} -gt 0 ]; then
+    show_submenu=1
+elif [ ${#mitems[@]} -eq 0 ]; then
+    mitems=("${dmitems[@]}")
+    eitems=("${deitems[@]}")
+fi
+
 clear
 show_menu
 while true
@@ -97,7 +192,8 @@ do
             clear;
             m=$opt-1
             option_picked "$opt - ${mitems[$m]}"
-            $edir${eitems[$m]};
+            # Discovered paths contain no spaces; quote to be safe.
+            "${eitems[$m]}";
             after_exec;
         else
             case $opt in
@@ -105,6 +201,16 @@ do
                     clear;
                     option_picked "This script will automatically generate random events at ransom interval (30 minutes max). Type <Ctrl-C> to return to menu";
                     ../menu/auto;
+                    show_menu;
+                ;;
+
+                d)
+                    if [ "$show_submenu" = "1" ]; then
+                        show_detections_menu;
+                    else
+                        option_picked "Pick a valid option from the menu";
+                    fi
+                    clear;
                     show_menu;
                 ;;
 

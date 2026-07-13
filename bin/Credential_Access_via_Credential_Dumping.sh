@@ -1,5 +1,6 @@
 #!/bin/sh
 # Shortname: credentials_dumping
+# Severity: High
 # Description: Runs mimipenguin and tries to dump passwords from inside the container environment.
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
