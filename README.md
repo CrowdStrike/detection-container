@@ -4,6 +4,10 @@
 
 This container will create detections and preventions only on Linux hosts, container platforms (e.g. OpenShift), and containers themselves, which are protected by a CrowdStrike sensor.
 
+> [!IMPORTANT]
+> This project intentionally incorporates security vulnerabilities and simulated attack scenarios to demonstrate CrowdStrike Falcon platform capabilities.
+> These behaviors are expected by design, and the project is intended solely for demonstration and testing in controlled environments, not for production use.
+
 Automated detections currently available include:
 
 | Name | Description |
