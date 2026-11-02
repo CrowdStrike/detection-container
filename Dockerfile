@@ -20,7 +20,7 @@ COPY www /var/www/html/
 
 RUN dnf -y install wget file zip vim-common bind-utils ruby php httpd php-fpm hostname ncurses binutils python-unversioned-command procps-ng iputils && \
     dnf -y clean all && \
-    rm -rf /var/cache/yum && \
+    rm -rf /var/cache/dnf && \
     mkdir -p /home/eval/bin/mimipenguin && \
     chmod +x /entrypoint.sh
 
